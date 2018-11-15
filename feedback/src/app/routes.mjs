@@ -26,16 +26,20 @@ router.route('/v1/feedback')
         const userId = req.get('Ubi-UserId');
         const feedback = req.body;
 
-        // first make sure the user exists
-        // validate session is active
-        // post to database collection
+        // TODO: first make sure the user exists
+        // TODO: validate session is active
+        
         const feedbackSchema = new FeedbackModel({
             sessionId,
             userId,
             feedback: feedback.value,
         })
-
+        
+        // post to database collection
+        console.log('+ Attempting to store schema feedback');
         const result = await feedbackSchema.save();
+
+        console.log('+ Feedback stored on database');
         res.json(result);
     });
 
