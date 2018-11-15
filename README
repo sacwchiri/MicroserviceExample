@@ -1,0 +1,37 @@
+#POST Feedback query
+
+url: http://localhost:8080/api/v1/feedback?sessionId=755325234
+header: {
+    Ubi_UserId: xxxxxxxxxx
+}
+body: {
+    value: [1-5]
+}
+
+#GET Feedback query
+url: http://localhost:8080/api/v1/feedback?minStar=[1-5]&maxStar=[1-5]&count=xx&sortBy=[fieldName]
+header: {
+    Ubi_UserId: xxxxxxxxxx
+}
+
+#NOTES
+There are many things left to do
+* Connect to user login flow
+* bug fixes on query limits
+* security
+* add front end with view
+* build shell script to make life easier (love me some make files <3)
+* sortBy is broken
+* this microservice style is over kill for an app this size
+* cool story bro
+
+# Install
+* on a Linux machine (although it may work on windows by changing the data path)
+* download docker and docker-compose, build-essentials
+* download the repo
+* docker-compose up
+* ? 
+* profit
+
+# Thanks for the oportunity
+## This is not done by a long shot and I will continue even if this does not pan out, only with a bit less work during the work week
