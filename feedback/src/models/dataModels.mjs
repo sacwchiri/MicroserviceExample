@@ -11,4 +11,4 @@ const FeedbackSchema = new Schema({
     timestamp: { type: Date, default: Date.now, index: true }
 });
 
-export default FeedbackSchema;
+export default mongoose.model('Feedback', FeedbackSchema);
