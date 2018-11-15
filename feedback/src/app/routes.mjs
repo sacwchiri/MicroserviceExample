@@ -16,19 +16,70 @@ router.route('/v1/feedback')
         // delete -> remove
         next();
     })*/
-    .get((req, res, next) => {
+    .get(async (req, res, next) => {
         // determine the structure of the fetch
-        const { count, sortby, user } = req.query;
-        res.status(200).json({message: 'success'})
+        const { count, sortby, minStar, maxStar } = req.query;
+        const userId = req.get('Ubi-UserId');
+        
+        const query = {};
+        if(userId) {
+            query['userId'] = userId;
+        }
+
+        if(minStar && maxStar && minStar > maxStar) {
+            const err = new Error();
+            err.message = "Wrong format";
+            err.status = 400;
+            next(err);
+        }
+
+        if(minStar) {
+            if(minStar < 1 || minStar > 4) {
+                const err = new Error();
+                err.message = "Wrong format";
+                err.status = 400;
+                next(err);
+            }
+
+            query['feedback'] = { $gte: minStar };
+        }
+
+        if(maxStar) {
+            if(maxStar < 1 || maxStar > 5) {
+                const err = new Error();
+                err.message = "Wrong format";
+                err.status = 400;
+                next(err);
+            }
+
+            query['feedback'] = Object.assign({}, query['feedback'], { $lte: maxStar });
+        }
+
+        try {
+            const results = await FeedbackModel
+                .find(query)
+                .sort(sortby)
+                .limit(Number.parseInt(count));
+
+            res.json(results);
+        } catch (error) {
+            next(error);
+        }
     })
-    .post(async (req, res) => {
+    .post(async (req, res, next) => {
         const { sessionId } = req.query;
         const userId = req.get('Ubi-UserId');
         const feedback = req.body;
 
         // TODO: first make sure the user exists
         // TODO: validate session is active
-        
+        if(!userId || !sessionId) {
+            const err = new Error();
+            err.message = "Wrong format";
+            err.status = 400;
+            next(err);
+        }
+
         const feedbackSchema = new FeedbackModel({
             sessionId,
             userId,
@@ -44,8 +95,6 @@ router.route('/v1/feedback')
         } catch (error) {
             console.log(JSON.stringify(error));
         }
-
     });
-
 
 export default router;
