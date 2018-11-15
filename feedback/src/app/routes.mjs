@@ -37,10 +37,14 @@ router.route('/v1/feedback')
         
         // post to database collection
         console.log('+ Attempting to store schema feedback');
-        const result = await feedbackSchema.save();
+        try {
+            const result = await feedbackSchema.save();
+            console.log('+ Feedback stored on database');
+            res.json(result);
+        } catch (error) {
+            console.log(JSON.stringify(error));
+        }
 
-        console.log('+ Feedback stored on database');
-        res.json(result);
     });
 
 

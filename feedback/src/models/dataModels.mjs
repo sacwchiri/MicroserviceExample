@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const FeedbackSchema = new Schema({
-    userId: { type: Schema.Types.ObjectId, index: true },
+    userId: { type: String, index: true },
     feedback: { type: Number, min: 1, max: 5 },
     sessionId: String,
     timestamp: { type: Date, default: Date.now, index: true }
