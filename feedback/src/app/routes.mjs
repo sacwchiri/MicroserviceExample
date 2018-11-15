@@ -1,10 +1,10 @@
 import express from 'express';
-import data from '../models/dataModels.mjs';
+import FeedbackModel from '../models/dataModels.mjs';
 
 const router = express.Router();
 
 router.route('/v1/feedback')
-    .all((req, res, next) => {
+   /* .all((req, res, next) => {
         // by this point we should be able to tell if the account has the permissions required for operation
         // all users should be able to create a feedback but maybe not all read them
         // all calls should have a valid sessionId in the url path
@@ -15,13 +15,29 @@ router.route('/v1/feedback')
         // put -> update
         // delete -> remove
         next();
-    })
+    })*/
     .get((req, res, next) => {
         // determine the structure of the fetch
         const { count, sortby, user } = req.query;
         res.status(200).json({message: 'success'})
     })
-    .post((req, res, next) => {});
+    .post(async (req, res) => {
+        const { sessionId } = req.query;
+        const userId = req.get('Ubi-UserId');
+        const feedback = req.body;
+
+        // first make sure the user exists
+        // validate session is active
+        // post to database collection
+        const feedbackSchema = new FeedbackModel({
+            sessionId,
+            userId,
+            feedback: feedback.value,
+        })
+
+        const result = await feedbackSchema.save();
+        res.json(result);
+    });
 
 
 export default router;
