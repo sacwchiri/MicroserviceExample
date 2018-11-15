@@ -1,0 +1,18 @@
+{
+  "name": "technicaltest_dataaccess",
+  "version": "1.0.0",
+  "description": "Data access microservice",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --experimental-modules index.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.11",
+    "nodemon": "^1.18.6"
+  }
+}

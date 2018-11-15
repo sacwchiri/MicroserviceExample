@@ -1,0 +1,11 @@
+{
+  "name": "technicaltest",
+  "version": "1.0.0",
+  "description": "Technical Test for ubisoft entry",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

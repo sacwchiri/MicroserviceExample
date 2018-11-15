@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: vm_mongoDB
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=l33tP@55w0rDD123456789
+    volumes:
+    # NOTE: Since this project is currently run on a virtual machine with a shared folder, it is causing trouble
+    # to add the database to the project so is better to map it to the host os directly. This is a known problem of
+    # mongo in virtual environments
+      - /data/db:/data/db
+    command: mongod --dbpath /data/db
+  nginx:
+    image: nginx:latest
+    container_name: vm_nginx
+    volumes: 
+      - ./nginx/:/etc/nginx/conf.d/
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongodb
+      - feedback
+  feedback:
+    build: './feedback'
+    ports: 
+      - 3001:3000
+    depends_on:
+      - mongodb
+    volumes:
+      - ./feedback/:/var/www/api/
